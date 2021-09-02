@@ -8,10 +8,10 @@ module.exports = {
     resolve:{
       extensions:[],
       alias:{
-        'assets': 'src/assets',
-        'components':'src/components',
-        'network':'src/network',
-        'views':'src/views'
+        'assets': '@/assets',
+        'components':'@/components',
+        'network':'@/network',
+        'views':'@/views'
       }
     }
   }
