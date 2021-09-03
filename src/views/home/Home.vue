@@ -4,66 +4,75 @@
       <div slot="center">购物街</div>
     </nav-bar>
 
-    <home-swiper :cbanners="banners"></home-swiper>
-    <RecommendView :crecommends="recommends"></RecommendView>
-    <feature-view />
-    <tab-control :titles="tabTitles"
-                  @a="tabClick"></tab-control>
-    <goods-list :cgoods="showGoods"></goods-list>
+    <!--放入到自定义封装的Scroll中-->
+    <scroll ref="scroll"
+            @scroll="contentScroll">
+      <home-swiper :cbanners="banners"></home-swiper>
+      <RecommendView :crecommends="recommends"></RecommendView>
+      <feature-view />
+      <tab-control :titles="tabTitles"
+                   @a="tabClick"></tab-control>
+      <goods-list :cgoods="showGoods"></goods-list>
 
 
-    <ul>
-      <li>1111</li>
-      <li>1112</li>
-      <li>1113</li>
-      <li>1114</li>
-      <li>1115</li>
-      <li>1116</li>
-      <li>1117</li>
-      <li>1118</li>
-      <li>1119</li>
-      <li>11110</li>
-      <li>11111</li>
-      <li>11112</li>
-      <li>11113</li>
-      <li>11114</li>
-      <li>11115</li>
-      <li>11116</li>
-      <li>11117</li>
-      <li>11118</li>
-      <li>11119</li>
-      <li>11120</li>
-      <li>11121</li>
-      <li>11122</li>
-      <li>11123</li>
-      <li>11124</li>
-      <li>11125</li>
-      <li>11126</li>
-      <li>11127</li>
-      <li>11128</li>
-      <li>11129</li>
-      <li>11130</li>
-      <li>11131</li>
-      <li>11132</li>
-      <li>11133</li>
-      <li>11134</li>
-      <li>11135</li>
-      <li>11136</li>
-      <li>11137</li>
-      <li>11138</li>
-      <li>11139</li>
-      <li>11140</li>
-      <li>11141</li>
-      <li>11142</li>
-      <li>11143</li>
-      <li>11144</li>
-      <li>11145</li>
-      <li>11146</li>
-      <li>11147</li>
-      <li>11148</li>
-      <li>11149</li>
-      <li>11150</li>
-    </ul>
+      <ul>
+        <li>1111</li>
+        <li>1112</li>
+        <li>1113</li>
+        <li>1114</li>
+        <li>1115</li>
+        <li>1116</li>
+        <li>1117</li>
+        <li>1118</li>
+        <li>1119</li>
+        <li>11110</li>
+        <li>11111</li>
+        <li>11112</li>
+        <li>11113</li>
+        <li>11114</li>
+        <li>11115</li>
+        <li>11116</li>
+        <li>11117</li>
+        <li>11118</li>
+        <li>11119</li>
+        <li>11120</li>
+        <li>11121</li>
+        <li>11122</li>
+        <li>11123</li>
+        <li>11124</li>
+        <li>11125</li>
+        <li>11126</li>
+        <li>11127</li>
+        <li>11128</li>
+        <li>11129</li>
+        <li>11130</li>
+        <li>11131</li>
+        <li>11132</li>
+        <li>11133</li>
+        <li>11134</li>
+        <li>11135</li>
+        <li>11136</li>
+        <li>11137</li>
+        <li>11138</li>
+        <li>11139</li>
+        <li>11140</li>
+        <li>11141</li>
+        <li>11142</li>
+        <li>11143</li>
+        <li>11144</li>
+        <li>11145</li>
+        <li>11146</li>
+        <li>11147</li>
+        <li>11148</li>
+        <li>11149</li>
+        <li>11150</li>
+      </ul>
+    </scroll>
+    <!--组件默认不可点击，需要加修饰符：native-->
+    <back-top @click.native="backTopClick"
+              v-show="isShowBackTop"></back-top>
+
+
   </div>
 </template>
 
@@ -75,6 +84,8 @@
    import FeatureView from './childComps/FeatureView'
    import TabControl from 'components/contents/TabControl'
    import GoodsList from 'components/contents/goods/GoodsList'
+   import Scroll from 'components/common/scroll/Scroll'
+   import backTop from 'components/contents/backTop'
 
 
    /*导入js*/
@@ -88,7 +99,9 @@
       RecommendView,
       FeatureView,
       TabControl,
-      GoodsList
+      GoodsList,
+      Scroll,
+      backTop
     },
 
     data(){
@@ -105,7 +118,8 @@
           'new':{page:0, list:[]},
           'sell':{page:0, list:[]}
         },
-        currentType:'pop'
+        currentType:'pop',
+        isShowBackTop:false
       }
     },
 
@@ -121,7 +135,8 @@
     computed:{
       showGoods(){
         return this.goods[this.currentType].list
-      }
+      },
+
     },
 
     methods:{
@@ -141,7 +156,7 @@
 
         const page = this.goods[type].page +1
         getHomeGoods(type,page).then(res =>{
-        console.log(res)
+        //console.log(res)
         //往原有数组中添加元素
         this.goods[type].list.push(...res.data.list)
         //默认page为0，需要+1
@@ -164,6 +179,15 @@
             this.currentType = 'sell'
             break
         }
+      },
+
+
+      backTopClick(){
+        this.$refs.scroll.scrollTo(0,0)
+      },
+
+      contentScroll(position){
+        this.isShowBackTop = -(position.y) >1000
       }
     }
 
@@ -172,6 +196,7 @@
 
 <style scoped>
   #home{
+    /*vh:view-height（视图高度）*/
     height: 100vh;
     position: relative;
   }
@@ -180,8 +205,6 @@
     color:#fff;
     background-color: var(--color-tint);
 
-    /*在使用浏览器原生滚动时, 为了让导航不跟随一起滚动,但是固定后会脱离标准流，会让后面的元素顶上来
-      ，所以我就注释掉了*/
     /*position: fixed;
     left: 0;
     right:0;
