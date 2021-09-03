@@ -13,3 +13,12 @@ export function getHomeMultiDate() {
   })
 }
 
+
+/*请求首页商品数据（分类处理）*/
+export function getHomeGoods(type,page) {
+  return request({
+    url:'/home/data',
+    params:{type,page}
+  })
+}
+
