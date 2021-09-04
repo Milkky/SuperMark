@@ -6,6 +6,9 @@
 
     <!--放入到自定义封装的Scroll中-->
     <scroll ref="scroll"
+            :probeType="3"
+            :pullUpLoad="true"
+            @pullingUp="loadMore"
             @scroll="contentScroll">
       <home-swiper :cbanners="banners"></home-swiper>
       <RecommendView :crecommends="recommends"></RecommendView>
@@ -15,7 +18,7 @@
       <goods-list :cgoods="showGoods"></goods-list>
 
 
-      <ul>
+      <!--<ul>
         <li>1111</li>
         <li>1112</li>
         <li>1113</li>
@@ -66,7 +69,7 @@
         <li>11148</li>
         <li>11149</li>
         <li>11150</li>
-      </ul>
+      </ul>-->
     </scroll>
     <!--组件默认不可点击，需要加修饰符：native-->
     <back-top @click.native="backTopClick"
@@ -132,6 +135,18 @@
       this.getHomeGoods('sell')
     },
 
+    /*在组件模板渲染完成后执行*/
+    mounted(){
+      /*接受GoodListItem发来的事件,在进行回调函数*/
+      this.$bus.$on('itemImageLoad',() =>{
+        //console.log('图片加载完毕---！')
+        /*此时获取scroll对象进行刷新*/
+        this.$refs.scroll.refresh()
+      })
+
+
+    },
+
     computed:{
       showGoods(){
         return this.goods[this.currentType].list
@@ -161,7 +176,11 @@
         this.goods[type].list.push(...res.data.list)
         //默认page为0，需要+1
         this.goods[type].page += 1
+
+          /*完成上拉加载更多*/
+        this.$refs.scroll.finishPullUp()
       })
+
       },
 
 
@@ -188,6 +207,10 @@
 
       contentScroll(position){
         this.isShowBackTop = -(position.y) >1000
+      },
+
+      loadMore(){
+        this.getHomeGoods(this.currentType)
       }
     }
 

@@ -27,11 +27,11 @@
       /*probeType: 0/1/2(手指滚动)/3(只要是滚动)*/
       probeType:{
         type:Number,
-        default:2
+        default:0
       },
 
       /*2.上拉加载属性：pullUpload(true/false)*/
-      pullUpload:{
+      pullUpLoad:{
         type: Boolean,
         default: false
       },
@@ -54,16 +54,29 @@
       this.scroll = new BScroll(this.$refs.wrapper,{
         click:this.click,
         probeType: this.probeType,
-        pullUpload: this.pullUpload
+        pullUpLoad: this.pullUpLoad
       })
 
 
       /*监听滚动位置*/
-      this.scroll.on('scroll',(position) =>{
-        //console.log(position)
-        /*向Home父元素发射事件，并传参数'position'*/
-        this.$emit('scroll',position)
-      })
+      if(this.probeType === 2 || this.probeType === 3){
+        this.scroll.on('scroll',(position) =>{
+          //console.log(position)
+          /*向Home父组件发射事件，并传参数'position'*/
+          this.$emit('scroll',position)
+        })
+      }
+
+      /*监听滚动底部事件'pullingUp'*/
+      if(this.pullUpLoad){
+        this.scroll.on('pullingUp',() =>{
+          /*默认只能调用一次*/
+          //console.log("=====")
+          /*当需要重新再调用时，需要执行finishPullUp()方法*/
+          //this.scroll.finishPullUp()
+          this.$emit('pullingUp')
+        })
+      }
 
     },
 
@@ -71,7 +84,15 @@
     /*scroll组件定义一些方法*/
     methods:{
       scrollTo(x,y,time = 1000){
-        this.scroll.scrollTo(x,y,time)
+        this.scroll && this.scroll.scrollTo(x,y,time)
+      },
+
+      refresh(){
+        this.scroll && this.scroll.refresh()
+      },
+
+      finishPullUp(){
+        this.scroll && this.scroll.finishPullUp()
       }
     }
   }

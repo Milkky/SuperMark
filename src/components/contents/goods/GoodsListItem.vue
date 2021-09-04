@@ -1,6 +1,7 @@
 <template>
   <div class="goods-item">
-    <img :src="goodsItem.show.img" alt=""/>
+    <img :src="goodsItem.show.img" alt=""
+          @load="imgLoad"/>
     <div class="good-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -18,6 +19,17 @@
         default(){
           return {}
         }
+      }
+    },
+
+    methods:{
+      /*滚动到底部会出现BUG
+      * 1.scroll对象中的scrollHeight(可滚动高度没有及时更新-->和图片加载有关)
+      * 2.所以要在这里监听图片加载完成
+      * 3.而该组件和Home组件不存在父子关系，这里用事件总线方法
+      * */
+      imgLoad() {
+        this.$bus.$emit('itemImageLoad')
       }
     }
   }
