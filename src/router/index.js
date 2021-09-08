@@ -7,6 +7,7 @@ const Home = () => import('views/home/Home')
 const Cart = () => import('views/cart/Cart')
 const Category = () => import('views/category/Category')
 const Me = () => import('views/me/Me')
+const Detail = () => import('views/detail/Detail')
 
 //注册
 Vue.use(VueRouter)
@@ -36,6 +37,12 @@ const routes = [
   {
     path:'/me',
     component: Me
+  },
+
+  {
+    /*路径配置：params类型*/
+    path:'/detail/:iid',
+    component: Detail
   }
 
 ]

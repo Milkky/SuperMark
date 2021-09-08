@@ -1,6 +1,8 @@
 <template>
   <div class="goods-item">
-    <img :src="goodsItem.show.img" alt=""
+    <img :src="goodsItem.show.img"
+          alt=""
+          @click="imgClick"
           @load="imgLoad"/>
     <div class="good-info">
       <p>{{goodsItem.title}}</p>
@@ -30,6 +32,12 @@
       * */
       imgLoad() {
         this.$bus.$emit('itemImageLoad')
+      },
+
+      /*点击图片，切换路径，转到detail路由*/
+      imgClick(){
+        console.log(this.goodsItem.iid)
+        this.$router.push('/detail/' + this.goodsItem.iid)
       }
     }
   }

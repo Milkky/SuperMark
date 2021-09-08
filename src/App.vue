@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <main-tarbar></main-tarbar>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view />
+    </keep-alive>
   </div>
 </template>
 

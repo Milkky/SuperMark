@@ -4,72 +4,30 @@
       <div slot="center">购物街</div>
     </nav-bar>
 
+    <!--tab-control吸顶效果-->
+    <tab-control :titles="tabTitles"
+                 ref="tabControl1"
+                 v-show="isFixed"
+                 class="tabControl1"
+                 @a="tabClick">
+    </tab-control>
+
     <!--放入到自定义封装的Scroll中-->
     <scroll ref="scroll"
             :probeType="3"
             :pullUpLoad="true"
             @pullingUp="loadMore"
             @scroll="contentScroll">
-      <home-swiper :cbanners="banners"></home-swiper>
+      <home-swiper :cbanners="banners"
+                   @swiperImageLoad="swiperImageLoad">
+      </home-swiper>
       <RecommendView :crecommends="recommends"></RecommendView>
       <feature-view />
       <tab-control :titles="tabTitles"
-                   @a="tabClick"></tab-control>
+                   ref="tabControl2"
+                   @a="tabClick">
+      </tab-control>
       <goods-list :cgoods="showGoods"></goods-list>
-
-
-      <!--<ul>
-        <li>1111</li>
-        <li>1112</li>
-        <li>1113</li>
-        <li>1114</li>
-        <li>1115</li>
-        <li>1116</li>
-        <li>1117</li>
-        <li>1118</li>
-        <li>1119</li>
-        <li>11110</li>
-        <li>11111</li>
-        <li>11112</li>
-        <li>11113</li>
-        <li>11114</li>
-        <li>11115</li>
-        <li>11116</li>
-        <li>11117</li>
-        <li>11118</li>
-        <li>11119</li>
-        <li>11120</li>
-        <li>11121</li>
-        <li>11122</li>
-        <li>11123</li>
-        <li>11124</li>
-        <li>11125</li>
-        <li>11126</li>
-        <li>11127</li>
-        <li>11128</li>
-        <li>11129</li>
-        <li>11130</li>
-        <li>11131</li>
-        <li>11132</li>
-        <li>11133</li>
-        <li>11134</li>
-        <li>11135</li>
-        <li>11136</li>
-        <li>11137</li>
-        <li>11138</li>
-        <li>11139</li>
-        <li>11140</li>
-        <li>11141</li>
-        <li>11142</li>
-        <li>11143</li>
-        <li>11144</li>
-        <li>11145</li>
-        <li>11146</li>
-        <li>11147</li>
-        <li>11148</li>
-        <li>11149</li>
-        <li>11150</li>
-      </ul>-->
     </scroll>
     <!--组件默认不可点击，需要加修饰符：native-->
     <back-top @click.native="backTopClick"
@@ -122,8 +80,24 @@
           'sell':{page:0, list:[]}
         },
         currentType:'pop',
-        isShowBackTop:false
+        isShowBackTop:false,
+        tabOffsetTop:0,
+        isFixed:false,
+        saveY:0
       }
+    },
+
+    /*在组件keep-alive下，组件不会频繁创建*/
+    /*1.当组件离开时保存一下Y值*/
+    deactivated(){
+      this.saveY = this.$refs.scroll.getScrollY()
+    },
+
+    /*2.组件活跃时重新赋为Y值*/
+    activated(){
+      this.$refs.scroll.scrollTo(0,this.saveY,0)
+      /*重新调用refresh()*/
+      this.$refs.scroll.refresh()
     },
 
     /*组件创建时调用的生命周期函数*/
@@ -141,9 +115,8 @@
       this.$bus.$on('itemImageLoad',() =>{
         //console.log('图片加载完毕---！')
         /*此时获取scroll对象进行刷新*/
-        this.$refs.scroll.refresh()
+      this.$refs.scroll.refresh()
       })
-
 
     },
 
@@ -171,7 +144,7 @@
 
         const page = this.goods[type].page +1
         getHomeGoods(type,page).then(res =>{
-        //console.log(res)
+        console.log(res)
         //往原有数组中添加元素
         this.goods[type].list.push(...res.data.list)
         //默认page为0，需要+1
@@ -198,6 +171,9 @@
             this.currentType = 'sell'
             break
         }
+
+        this.$refs.tabControl1.currentIndex = index
+        this.$refs.tabControl2.currentIndex = index
       },
 
 
@@ -205,12 +181,21 @@
         this.$refs.scroll.scrollTo(0,0)
       },
 
+      /*内容滚动位置监听*/
       contentScroll(position){
         this.isShowBackTop = -(position.y) >1000
+
+        this.isFixed = -(position.y) > this.tabOffsetTop
       },
 
       loadMore(){
         this.getHomeGoods(this.currentType)
+      },
+
+      swiperImageLoad(){
+        /*访问组件元素：$el*/
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
+        console.log(this.tabOffsetTop)
       }
     }
 
@@ -233,5 +218,12 @@
     right:0;
     top: 0;
     z-index: 9;*/
+  }
+
+
+  .tabControl1{
+    position: relative;
+    z-index: 9;
+    background-color: #999999;
   }
 </style>
