@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <main-tarbar></main-tarbar>
-    <keep-alive>
+    <!--排除detail-->
+    <keep-alive exclude="Detail">
       <router-view />
     </keep-alive>
   </div>

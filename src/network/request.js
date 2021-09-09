@@ -1,4 +1,4 @@
-/*先定义一个请求网络，配置baseURL,创建axios实例*/
+/*定义一个请求网络，配置baseURL,创建axios实例*/
 
 import axios from 'axios'
 

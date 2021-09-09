@@ -144,7 +144,7 @@
 
         const page = this.goods[type].page +1
         getHomeGoods(type,page).then(res =>{
-        console.log(res)
+        //console.log(res)
         //往原有数组中添加元素
         this.goods[type].list.push(...res.data.list)
         //默认page为0，需要+1
@@ -195,7 +195,7 @@
       swiperImageLoad(){
         /*访问组件元素：$el*/
         this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
-        console.log(this.tabOffsetTop)
+        //console.log(this.tabOffsetTop)
       }
     }
 

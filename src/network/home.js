@@ -17,6 +17,9 @@ export function getHomeMultiDate() {
 /*请求首页商品数据（分类处理）*/
 export function getHomeGoods(type,page) {
   return request({
+    /*
+    * /home/data?type=pop&page=1
+    * */
     url:'/home/data',
     params:{type,page}
   })
