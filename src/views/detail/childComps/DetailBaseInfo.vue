@@ -15,7 +15,7 @@
     </div>
 
     <div class="info-service">
-      <span v-for="index in cgoods.services.length-1" class="info-service-item">
+      <span v-for="index in cgoods.services.length-1" class="info-service-item" :key="index">
         <img :src="cgoods.services[index].icon" alt="" />
         <span>{{cgoods.services[index].name}}</span>
       </span>
@@ -63,7 +63,7 @@
 <style scoped>
   .base-info{
     color: #999999;
-    border-bottom: 5px solid red;
+    border-bottom: 5px solid #f2f5f8;
     margin-top: 15px;
     padding: 0 8px;
   }
@@ -119,7 +119,8 @@
     justify-content: space-between;
   }
 
-  .info-service img{
+
+  .info-service-item img{
     width: 14px;
     height:14px;
     /*对元素进行微调，使用相对定位*/
@@ -127,7 +128,7 @@
     top:2px;
   }
 
-  .info-service span{
+  .info-service-item span{
     font-size: 13px;
     color:#333;
   }

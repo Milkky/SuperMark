@@ -17,6 +17,8 @@ export function getGoodsDetail(iid) {
 /*导出类
 * ES6定义类class
 * */
+
+/*定义商品详情对象*/
 export class Goods{
   constructor(itemInfo, columns, services){
     this.title = itemInfo.title
@@ -27,5 +29,18 @@ export class Goods{
     this.columns = columns
     this.services = services
     this.realPrice = itemInfo.lowNowPrice
+  }
+}
+
+
+/*定义店铺信息对象*/
+export class Shop{
+  constructor(shopInfo){
+    this.logo = shopInfo.shopLogo;
+    this.name = shopInfo.name;
+    this.fans = shopInfo.cFans;
+    this.sells = shopInfo.cSells;
+    this.score = shopInfo.score;
+    this.goodsCount = shopInfo.cGoods
   }
 }

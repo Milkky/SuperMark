@@ -14,6 +14,7 @@
 
     <!--放入到自定义封装的Scroll中-->
     <scroll ref="scroll"
+            class="scroll-wrapper"
             :probeType="3"
             :pullUpLoad="true"
             @pullingUp="loadMore"
@@ -219,6 +220,20 @@
     top: 0;
     z-index: 9;*/
   }
+
+  .scroll-wrapper{
+  /*使用该框架需要给外包裹元素给一个高度，这里用绝对定位*/
+
+    /*当不在该高度范围进行隐藏*/
+    overflow: hidden;
+
+    position: absolute;
+    top:44px;
+    bottom: 49px;
+    left:0;
+    right:0;
+  }
+
 
 
   .tabControl1{
