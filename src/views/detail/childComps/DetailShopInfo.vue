@@ -92,6 +92,7 @@
 
   .shop-middle{
     display: flex;
+    padding-top: 25px;
   }
 
   /*左右flex居中布局*/

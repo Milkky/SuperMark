@@ -10,11 +10,12 @@
       <detail-goods-info :cgoodslInfo="goodsDetailInfo"
                           @displayImgLoad="imgLoad">
       </detail-goods-info>
+      <detail-param-info :cgoodsParam="goodsParam"></detail-param-info>
     </scroll>
 
 
 
-    <ul>
+    <!--<ul>
       <li></li>
       <li></li>
       <li></li>
@@ -25,7 +26,7 @@
       <li></li>
       <li></li>
       <li></li>
-    </ul>
+    </ul>-->
   </div>
 </template>
 
@@ -37,10 +38,11 @@
   import  DetailShopInfo from './childComps/DetailShopInfo'
   import Scroll from 'components/common/scroll/Scroll'
   import DetailGoodsInfo from './childComps/DetailGoodsInfo'
+  import DetailParamInfo from './childComps/DetailParamInfo'
 
 
   /*导入函数或类*/
-  import {getGoodsDetail,Goods,Shop} from 'network/detail'
+  import {getGoodsDetail,Goods,Shop,Param} from 'network/detail'
 
   export default {
     name: "Detail",
@@ -51,7 +53,8 @@
       DetailBaseInfo,
       DetailShopInfo,
       Scroll,
-      DetailGoodsInfo
+      DetailGoodsInfo,
+      DetailParamInfo
   },
 
     data(){
@@ -61,7 +64,8 @@
         topImages:[],
         goods:{},
         shop:{},
-        goodsDetailInfo:{}
+        goodsDetailInfo:{},
+        goodsParam:{}
       }
     },
 
@@ -71,6 +75,7 @@
       this.iid = this.$route.params.iid
       getGoodsDetail(this.iid).then(res =>{
         const data = res.result
+        console.log(data)
         this.topImages = data.itemInfo.topImages
         //console.log(this.topImages)
 
@@ -84,7 +89,11 @@
 
         /*请求商品详细数据*/
         this.goodsDetailInfo = data.detailInfo
-        console.log(this.goodsDetailInfo)
+        //console.log(this.goodsDetailInfo)
+
+        /*获取商品参数数据*/
+        this.goodsParam = new Param(data.itemParams.info,data.itemParams.rule)
+        console.log(this.goodsParam)
       })
 
     },
@@ -92,7 +101,7 @@
     methods:{
       /*监听事件*/
       imgLoad(){
-        console.log('图片加载完成')
+        //console.log('图片加载完成')
         this.$refs.scroll.refresh()
       }
     }

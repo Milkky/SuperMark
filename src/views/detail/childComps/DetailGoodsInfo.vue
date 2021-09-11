@@ -7,16 +7,19 @@
       <div class="end"></div>
     </div>
 
-    <div class="info-key">{{cgoodslInfo.detailImage[0].key}}</div>
-
-    <div class="info-list">
-      <!--绑定key的作用主要是为了高效的更新虚拟DOM-->
-      <img :src="item"
-           v-for="(item,index) in cgoodslInfo.detailImage[0].list"
-           :key="index"
-           @load="imgLoad"
-           alt="" />
+    <div v-for="itemA in cgoodslInfo.detailImage">
+      <div class="info-key">{{itemA.key}}</div>
+      <div class="info-list">
+        <!--绑定key的作用主要是为了高效的更新虚拟DOM-->
+        <img :src="item"
+             v-for="(item,index) in itemA.list"
+             :key="index"
+             @load="imgLoad"
+             alt="" />
+      </div>
     </div>
+
+
   </div>
 </template>
 
@@ -51,10 +54,9 @@
     },
 
     methods:{
-      imgLoad(){
-        if(++this.counter === this.cgoodslInfo.detailImage[0].list.length){
-          this.$emit('displayImgLoad')
-        }
+      imgLoad() {
+        /*后续完善防抖节流*/
+        this.$emit('displayImgLoad')
       }
     }
   }
