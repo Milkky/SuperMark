@@ -11,22 +11,25 @@
                           @displayImgLoad="imgLoad">
       </detail-goods-info>
       <detail-param-info :cgoodsParam="goodsParam"></detail-param-info>
+      <detail-goods-rate :cgoodsRate="goodsRate"></detail-goods-rate>
+
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
     </scroll>
 
 
 
-    <!--<ul>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>-->
+
   </div>
 </template>
 
@@ -39,6 +42,7 @@
   import Scroll from 'components/common/scroll/Scroll'
   import DetailGoodsInfo from './childComps/DetailGoodsInfo'
   import DetailParamInfo from './childComps/DetailParamInfo'
+  import DetailGoodsRate from './childComps/DetailGoodsRate'
 
 
   /*导入函数或类*/
@@ -54,7 +58,8 @@
       DetailShopInfo,
       Scroll,
       DetailGoodsInfo,
-      DetailParamInfo
+      DetailParamInfo,
+      DetailGoodsRate
   },
 
     data(){
@@ -65,7 +70,8 @@
         goods:{},
         shop:{},
         goodsDetailInfo:{},
-        goodsParam:{}
+        goodsParam:{},
+        goodsRate:{}
       }
     },
 
@@ -75,7 +81,7 @@
       this.iid = this.$route.params.iid
       getGoodsDetail(this.iid).then(res =>{
         const data = res.result
-        console.log(data)
+        //console.log(data)
         this.topImages = data.itemInfo.topImages
         //console.log(this.topImages)
 
@@ -93,7 +99,11 @@
 
         /*获取商品参数数据*/
         this.goodsParam = new Param(data.itemParams.info,data.itemParams.rule)
-        console.log(this.goodsParam)
+        //console.log(this.goodsParam)
+
+        /*商品评论数据*/
+        this.goodsRate = data.rate
+        console.log(this.goodsRate)
       })
 
     },
@@ -101,7 +111,7 @@
     methods:{
       /*监听事件*/
       imgLoad(){
-        //console.log('图片加载完成')
+        console.log('图片加载完成')
         this.$refs.scroll.refresh()
       }
     }
