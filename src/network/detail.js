@@ -14,6 +14,12 @@ export function getGoodsDetail(iid) {
   })
 }
 
+export function getGoodsRecommend() {
+  return request({
+    url:'./recommend'
+  })
+}
+
 /*导出类
 * ES6定义类class
 * */

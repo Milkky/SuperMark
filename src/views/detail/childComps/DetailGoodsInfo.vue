@@ -49,29 +49,29 @@
 
     data(){
       return{
-        count:0,
+        //count:0,
         imagesLength:0
       }
     },
 
     methods:{
       imgLoad() {
-        this.count++
-        if(this.count === this.imagesLength){
+        this.imagesLength++
+        if(this.imagesLength === this.cgoodslInfo.detailImage[0].list.length){
           this.$emit('displayImgLoad')
         }
       }
     },
 
-    watch:{
-      /*获取图片个数
+    /*watch:{
+      /!*获取图片个数
       * watch监视cgoodslInfo对象，当图片完全加载成功时，把值赋给imagesLength
-      * */
+      * *!/
       cgoodslInfo(){
         this.imagesLength = this.cgoodslInfo.detailImage[0].list.length
         console.log(this.imagesLength)
       }
-    }
+    }*/
   }
 </script>
 

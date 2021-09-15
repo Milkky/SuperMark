@@ -52,6 +52,7 @@
 
    /*导入js*/
    import {getHomeMultiDate,getHomeGoods} from 'network/home'
+   import {debounce} from 'common/Tools'
 
   export default {
     name: "Home",
@@ -112,11 +113,13 @@
 
     /*在组件模板渲染完成后执行*/
     mounted(){
+      /*对this.$refs.scroll.refresh这个回调函数进行debounce处理*/
+      const refresh = debounce(this.$refs.scroll.refresh,50)
+
       /*接受GoodListItem发来的事件,在进行回调函数*/
       this.$bus.$on('itemImageLoad',() =>{
+        refresh()
         //console.log('图片加载完毕---！')
-        /*此时获取scroll对象进行刷新*/
-      this.$refs.scroll.refresh()
       })
 
     },
